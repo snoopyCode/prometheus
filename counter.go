@@ -8,20 +8,28 @@ import (
 // https://blog.golang.org/go-maps-in-action#TOC_6.
 // http://stackoverflow.com/questions/1823286/singleton-in-go
 
-type counter struct {
+// Counter with a map of counters
+type Counter struct {
 	mu     sync.Mutex
 	values map[string]int64
 }
 
+// NewCounter creates new Counter
+func NewCounter() *Counter {
+	return &Counter{
+		values: make(map[string]int64),
+	}
+}
+
 // Get returns the value of the counter
-func (s *counter) Get(key string) int64 {
+func (s *Counter) Get(key string) int64 {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	return s.values[key]
 }
 
 // Incr increases the counter
-func (s *counter) Incr(key string) int64 {
+func (s *Counter) Incr(key string) int64 {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	s.values[key]++
@@ -29,7 +37,7 @@ func (s *counter) Incr(key string) int64 {
 }
 
 // Keys returns all keys
-func (s *counter) Keys() []string {
+func (s *Counter) Keys() []string {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	keys := reflect.ValueOf(s.values).MapKeys()
@@ -41,7 +49,7 @@ func (s *counter) Keys() []string {
 }
 
 // All returns the values of the counter as map
-func (s *counter) All() map[string]int64 {
+func (s *Counter) All() map[string]int64 {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	return s.values
