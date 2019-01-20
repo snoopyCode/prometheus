@@ -1,6 +1,7 @@
 package prometheus
 
 import (
+	"fmt"
 	"reflect"
 	"sync"
 )
@@ -53,4 +54,9 @@ func (s *Counter) All() map[string]int64 {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	return s.values
+}
+
+// BuildCounterMetric returns a counter metric as string
+func BuildCounterMetric(metric string, metricsDesc string, label string, labelValue string, value int64) string {
+	return fmt.Sprintf("\n# HELP %s %s\n# TYPE %s counter\n%s{%s=\"%s\"} %d", metric, metricsDesc, metric, metric, label, labelValue, value)
 }

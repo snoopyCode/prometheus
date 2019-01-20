@@ -1,6 +1,7 @@
 package prometheus
 
 import (
+	"fmt"
 	"reflect"
 	"sync"
 )
@@ -46,4 +47,9 @@ func (s *Gauge) Keys() []string {
 		strkeys[i] = keys[i].String()
 	}
 	return strkeys
+}
+
+// BuildGaugeMetric returns a gauge metric as string
+func BuildGaugeMetric(metric string, metricsDesc string, label string, labelValue string, value string) string {
+	return fmt.Sprintf("\n# HELP %s %s\n# TYPE %s gauge\n%s{%s=\"%s\"} %s", metric, metricsDesc, metric, metric, label, labelValue, value)
 }
