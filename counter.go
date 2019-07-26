@@ -60,3 +60,8 @@ func (s *Counter) All() map[string]int64 {
 func BuildCounterMetric(metric string, metricsDesc string, label string, labelValue string, value int64) string {
 	return fmt.Sprintf("\n# HELP %s %s\n# TYPE %s counter\n%s{%s=\"%s\"} %d", metric, metricsDesc, metric, metric, label, labelValue, value)
 }
+
+// BuildCounterTwoLabelMetric returns a counter metric as string with 2 labels
+func BuildCounterTwoLabelMetric(metric string, metricsDesc string, label1 string, label1Value string, label2 string, label2Value string, value int64) string {
+	return fmt.Sprintf("\n# HELP %s %s\n# TYPE %s counter\n%s{%s=\"%s\",%s=\"%s\"} %d", metric, metricsDesc, metric, metric, label1, label1Value, label2, label2Value, value)
+}
